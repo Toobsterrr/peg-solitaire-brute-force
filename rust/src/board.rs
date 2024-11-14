@@ -1,8 +1,6 @@
 use std::fmt::Display;
 
 
-// const POSSIBLE_SOLUTION: [Move; 31] = [Move::Down(Piece(2, 4)), Move::Right(Piece(3, 2)), Move::Down(Piece(1, 3)), Move::Left(Piece(1, 5)), Move::Left(Piece(3, 4)), Move::Right(Piece(3, 1)), Move::Up(Piece(3, 5)), Move::Left(Piece(3, 7)), Move::Up(Piece(4, 3)), Move::Down(Piece(1, 3)), Move::Right(Piece(4, 1)), Move::Up(Piece(4, 3)), Move::Left(Piece(4, 5)), Move::Left(Piece(4, 7)), Move::Up(Piece(4, 5)), Move::Down(Piece(1, 5)), Move::Up(Piece(5, 3)), Move::Down(Piece(2, 3)), Move::Right(Piece(5, 1)), Move::Left(Piece(5, 4)), Move::Up(Piece(6, 5)), Move::Left(Piece(5, 7)), Move::Up(Piece(7, 3)), Move::Down(Piece(4, 3)), Move::Left(Piece(7, 5)), Move::Up(Piece(7, 3)), Move::Right(Piece(5, 2)), Move::Right(Piece(5, 4)), Move::Down(Piece(3, 5)), Move::Left(Piece(5, 6)), Move::Down(Piece(5, 4))];
-
 // 1-indexed
 #[derive(Debug, PartialEq, Clone, Copy)]
 pub struct Piece(pub u32, pub u32);

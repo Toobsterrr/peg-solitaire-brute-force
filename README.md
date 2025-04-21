@@ -1,7 +1,10 @@
-# Brute force solutions of a game
+# A small project to practice multi core programming
 
-## languages
+This project brute forces solutions of a game called peg-solitaire: https://en.wikipedia.org/wiki/Peg_solitaire
+
+It will stop after reaching a certain amount of results and time the execution.
+
+## Implementation languages
+
 - rust
 - go
-
-

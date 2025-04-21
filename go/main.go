@@ -8,7 +8,7 @@ import (
 )
 
 
-const MAX_TASKS = 8;
+const MAX_TASKS = 4;
 
 
 type results struct {
@@ -25,8 +25,6 @@ func (res *results) append_solution(moves []Move) {
 
 
 
-// todo: make mutex passed by reference
-// todo: test atomic and results passed by value
 func game_move(b Board, moves []Move, res *results, task_count *atomic.Int32) {
     if b.is_finished() {
         var moves_copy = make([]Move, len(moves))

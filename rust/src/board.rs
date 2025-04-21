@@ -1,10 +1,8 @@
 use std::fmt::Display;
 
-
 // 1-indexed
 #[derive(Debug, PartialEq, Clone, Copy)]
 pub struct Piece(pub u32, pub u32);
-
 
 #[derive(Debug, Clone, Copy, PartialEq)]
 pub enum Direction {
@@ -13,7 +11,6 @@ pub enum Direction {
     Up,
     Down,
 }
-
 
 #[derive(Debug, Clone, Copy, PartialEq)]
 pub struct Move {
@@ -25,11 +22,10 @@ impl Move {
     fn new(direction: Direction, piece: Piece) -> Move {
         Move {
             direction: direction,
-            piece: piece
+            piece: piece,
         }
     }
 }
-
 
 // #[derive(Debug, PartialEq, Default)]
 // pub struct Symmetry {
@@ -39,17 +35,14 @@ impl Move {
 //     right_diagonal: bool,
 // }
 
-
 #[derive(Clone, Copy)]
 pub struct Board {
     board_size: u32,
     pieces: [[bool; 7]; 7],
-    nb_pieces: u32
+    pub nb_pieces: u32,
 }
 
-
 impl Board {
-
     pub fn new() -> Self {
         let pieces = [
             [false, false, true, true, true, false, false],
@@ -62,18 +55,16 @@ impl Board {
         ];
 
         let b = Board {
-            board_size: 7, 
-            pieces: pieces, 
-            nb_pieces: 32
+            board_size: 7,
+            pieces: pieces,
+            nb_pieces: 32,
         };
 
         b
     }
 
-
     // fn get_symmetries(&self) -> Symmetry {
     //     let mut res = Symmetry::default();
-
 
     //     // row wise
     //     res.horizontal = true;
@@ -123,36 +114,49 @@ impl Board {
 
     // inside the cross positions
     fn position_is_valid(&self, row: u32, col: u32) -> bool {
-        return (row >= 3 && row <= 5 && col > 0 && col < 8) || (col >= 3 && col <= 5 && row > 0 && row < 8);
+        return (row >= 3 && row <= 5 && col > 0 && col < 8)
+            || (col >= 3 && col <= 5 && row > 0 && row < 8);
     }
 
-    fn contains_piece(&self, row: u32 , col: u32) -> bool {
+    fn contains_piece(&self, row: u32, col: u32) -> bool {
         self.pieces[row as usize - 1][col as usize - 1]
     }
 
-
     pub fn get_possible_moves(&self) -> Vec<Move> {
         let mut moves = Vec::new();
-        
+
         for row in 1..=self.board_size {
             for col in 1..=self.board_size {
                 if !self.contains_piece(row, col) {
                     continue;
                 }
-                if self.position_is_valid(row, col+2) && self.contains_piece(row, col + 1) && !self.contains_piece(row, col + 2) {
+                if self.position_is_valid(row, col + 2)
+                    && self.contains_piece(row, col + 1)
+                    && !self.contains_piece(row, col + 2)
+                {
                     moves.push(Move::new(Direction::Right, Piece(row, col)));
-                } else if col >= 2 && self.position_is_valid(row, col-2) && self.contains_piece(row, col - 1) && !self.contains_piece(row, col - 2) {
+                } else if col >= 2
+                    && self.position_is_valid(row, col - 2)
+                    && self.contains_piece(row, col - 1)
+                    && !self.contains_piece(row, col - 2)
+                {
                     moves.push(Move::new(Direction::Left, Piece(row, col)));
-                } else if self.position_is_valid(row+2, col) && self.contains_piece(row + 1, col) && !self.contains_piece(row + 2, col) {
+                } else if self.position_is_valid(row + 2, col)
+                    && self.contains_piece(row + 1, col)
+                    && !self.contains_piece(row + 2, col)
+                {
                     moves.push(Move::new(Direction::Down, Piece(row, col)));
-                } else if row >= 2 && self.position_is_valid(row-2, col) && self.contains_piece(row - 1, col) && !self.contains_piece(row - 2, col) {
+                } else if row >= 2
+                    && self.position_is_valid(row - 2, col)
+                    && self.contains_piece(row - 1, col)
+                    && !self.contains_piece(row - 2, col)
+                {
                     moves.push(Move::new(Direction::Up, Piece(row, col)));
                 }
             }
         }
         moves
     }
-
 
     pub fn apply_move(&mut self, m: &Move) {
         let Piece(row, col) = m.piece;
@@ -185,7 +189,6 @@ impl Board {
         };
     }
 
-
     pub fn undo_move(&mut self, m: &Move) {
         let Piece(row, col) = m.piece;
         let row = row as usize - 1;
@@ -216,15 +219,14 @@ impl Board {
             }
         };
     }
-
 }
 
 impl Display for Board {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         for row in 0..self.pieces.len() {
             // row except last character
-            write!(f, "{} ", row+1).unwrap();
-            for col in 0..self.pieces[row].len()-1 {
+            write!(f, "{} ", row + 1).unwrap();
+            for col in 0..self.pieces[row].len() - 1 {
                 if self.pieces[row][col] {
                     write!(f, "+ ").unwrap();
                 } else {
@@ -234,7 +236,7 @@ impl Display for Board {
 
             // last character doesnt have a space after
             if self.pieces[row][self.pieces.len() as usize - 1] {
-                write!(f, "+\n").unwrap();    
+                write!(f, "+\n").unwrap();
             } else {
                 write!(f, " \n").unwrap();
             }
@@ -246,8 +248,6 @@ impl Display for Board {
         write!(f, "")
     }
 }
-
-
 
 pub fn print_steps(board: &mut Board, moves: &Vec<Move>) {
     println!("{}", board);
